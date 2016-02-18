@@ -43,14 +43,14 @@ rm -r data/local/data/links 2>/dev/null
 mkdir -p data/local/data/links || exit 1;
 
 for subdir in fe_03_p1_sph1  fe_03_p1_sph3  fe_03_p1_sph5  fe_03_p1_sph7 \
-  fe_03_p2_sph1  fe_03_p2_sph3  fe_03_p2_sph5  fe_03_p2_sph7 fe_03_p1_sph2 \
-  fe_03_p1_sph4  fe_03_p1_sph6  fe_03_p1_tran  fe_03_p2_sph2  fe_03_p2_sph4 \
-  fe_03_p2_sph6  fe_03_p2_tran; do
+  FE_03_P2_SPH1  FE_03_P2_SPH3  FE_03_P2_SPH5  FE_03_P2_SPH7 fe_03_p1_sph2 \
+  fe_03_p1_sph4  fe_03_p1_sph6  fe_03_p1_tran  FE_03_P2_SPH2  FE_03_P2_SPH4 \
+  FE_03_P2_SPH6  FE_03_P2_TRAN; do
   found_subdir=false
   for dir in $*; do
     if [ -d $dir/$subdir ]; then
       found_subdir=true
-      ln -s $dir/$subdir data/local/data/links
+      ln -s $dir/$subdir data/local/data/links/$(echo $subdir | tr '[:upper:]' '[:lower:]')
     else
       new_style_subdir=$(echo $subdir | sed s/fe_03_p2_sph/fisher_eng_tr_sp_d/)
       if [ -d $dir/$new_style_subdir ]; then

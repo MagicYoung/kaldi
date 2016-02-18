@@ -8,8 +8,9 @@ mfccdir=`pwd`/mfcc
 set -e
 
 # the next command produces the data in local/train_all
-local/fisher_data_prep.sh /export/corpora3/LDC/LDC2004T19 /export/corpora3/LDC/LDC2005T19 \
-   /export/corpora3/LDC/LDC2004S13 /export/corpora3/LDC/LDC2005S13
+local/fisher_data_prep.sh --calldata /ws/rz-cl-2/hasegawa/xyang45/corpus/fisher_eng_training
+#local/fisher_data_prep.sh /export/corpora3/LDC/LDC2004T19 /export/corpora3/LDC/LDC2005T19 \
+#   /export/corpora3/LDC/LDC2004S13 /export/corpora3/LDC/LDC2005S13
 # You could also try specifying the --calldata argument to this command as below.
 # If specified, the script will use actual speaker personal identification 
 # numbers released with the dataset, i.e. real speaker IDs. Note: --calldata has
@@ -116,7 +117,7 @@ steps/train_deltas.sh --cmd "$train_cmd" \
   utils/mkgraph.sh data/lang_test exp/tri2 exp/tri2/graph || exit 1;
   steps/decode.sh --nj 25 --cmd "$decode_cmd" --config conf/decode.config \
    exp/tri2/graph data/dev exp/tri2/decode_dev || exit 1;
-)&
+)
 
 
 steps/align_si.sh --nj 30 --cmd "$train_cmd" \
@@ -130,7 +131,7 @@ steps/train_lda_mllt.sh --cmd "$train_cmd" \
   utils/mkgraph.sh data/lang_test exp/tri3a exp/tri3a/graph || exit 1;
   steps/decode.sh --nj 25 --cmd "$decode_cmd" --config conf/decode.config \
    exp/tri3a/graph data/dev exp/tri3a/decode_dev || exit 1;
-)&
+)
 
 
 # Next we'll use fMLLR and train with SAT (i.e. on 
@@ -146,7 +147,7 @@ steps/train_sat.sh  --cmd "$train_cmd" \
   utils/mkgraph.sh data/lang_test exp/tri4a exp/tri4a/graph
   steps/decode_fmllr.sh --nj 25 --cmd "$decode_cmd" --config conf/decode.config \
    exp/tri4a/graph data/dev exp/tri4a/decode_dev
-)&
+)
 
 
 steps/align_fmllr.sh --nj 30 --cmd "$train_cmd" \
@@ -160,7 +161,7 @@ steps/train_sat.sh  --cmd "$train_cmd" \
   utils/mkgraph.sh data/lang_test exp/tri5a exp/tri5a/graph
   steps/decode_fmllr.sh --nj 25 --cmd "$decode_cmd" --config conf/decode.config \
     exp/tri5a/graph data/dev exp/tri5a/decode_dev
-)&
+)
 
 # this will help find issues with the lexicon.
 # steps/cleanup/debug_lexicon.sh --nj 300 --cmd "$train_cmd" data/train_100k data/lang exp/tri5a data/local/dict/lexicon.txt exp/debug_lexicon_100k
