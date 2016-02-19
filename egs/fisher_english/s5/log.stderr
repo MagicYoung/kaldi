@@ -1,0 +1,15 @@
+steps/cleanup/debug_lexicon.sh --nj 300 --cmd "$train_cmd" data/train_100k data/lang exp/tri5a data/local/dict/lexicon.txt exp/debug_lexicon_100k
+Checking word-level disambiguation symbols...
+--> data/lang_phone_bg/phones/wdisambig.txt exists (newer prepare_lang.sh)
+--> ERROR: line 1 of files data/lang_phone_bg/phones/wdisambig.txt and data/lang_phone_bg/phones/wdisambig_words.int mismatch
+--> data/lang_phone_bg/G.fst is ilabel sorted
+--> data/lang_phone_bg/G.fst has 129 states
+fstdeterminizestar data/lang_phone_bg/G.fst /dev/null 
+--> data/lang_phone_bg/G.fst is determinizable
+--> utils/lang/check_g_properties.pl successfully validated data/lang_phone_bg/G.fst
+--> utils/lang/check_g_properties.pl succeeded.
+--> Testing determinizability of L_disambig . G
+fstdeterminizestar 
+fsttablecompose data/lang_phone_bg/L_disambig.fst data/lang_phone_bg/G.fst 
+--> L_disambig . G is determinizable
+
